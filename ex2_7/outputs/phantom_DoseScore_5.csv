@@ -1,0 +1,7 @@
+# TOPAS Version: 3.9
+# Parameter File: ./jobs/fixed_job5.txt
+# Results for scorer: PhantomDoseScorer
+# Filtered by: OnlyIncludeIfParticleOrAncestorNamed = 1 "neutron"
+# Scored in component: Phantom
+# DoseToWater ( Gy ) : Sum   
+2.90570813937796e-11

@@ -1,0 +1,6 @@
+includeFile = neutron_production.txt 
+i:Ts/Seed = 3
+s:Sc/DoseScorer/OutputFile = "./outputs/fixed_DoseScore_3"
+s:Sc/PhantomDoseScorer/OutputFile = "./outputs/phantom_DoseScore_3"
+
+#s:Sc/SurfaceScorer/OutputFile = "./outputs/fixed_SurfaceScore_3"

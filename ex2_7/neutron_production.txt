@@ -1,0 +1,66 @@
+b:Ts/PauseBeforeQuit="True"
+i:So/Demo/NumberOfHistoriesInRun = 10
+i:Ts/ShowHistoryCountAtInterval = 10000
+i:Ts/NumberOfThreads = 0
+s:Gr/ViewA/Type = "OpenGL"
+
+s:So/Demo/Type = "Beam"
+s:So/Demo/Component = "BeamPosition"
+s:So/Demo/BeamParticle = "proton"
+d:So/Demo/BeamEnergy = 200 MeV
+
+u:So/Demo/BeamEnergySpread = 0.
+s:So/Demo/BeamAngularDistribution="None"
+s:So/Demo/BeamPositionDistribution="None"
+
+s:Ge/World/Material = "Vacuum"
+d:Ge/World/HLX=150.0 cm
+d:Ge/World/HLY=150.0 cm
+d:Ge/World/HLZ=150.0 cm
+b:Ge/World/Invisible = "True"
+
+s:Ge/Phantom/Type="TsBox"
+s:Ge/Phantom/Parent="World"
+s:Ge/Phantom/Material="G4_WATER"
+d:Ge/Phantom/HLX = 25. cm
+d:Ge/Phantom/HLY = 25. cm 
+d:Ge/Phantom/HLZ = 25. cm 
+s:Ge/Phantom/Color="blue"
+
+# Add a surface sphere to score neutrons at 1m.
+
+s:Ge/NeutronDetector/Type="TsSphere"
+s:Ge/NeutronDetector/Parent="World"
+#b:Ge/NeutronDetector/IsParallel="True"
+s:Ge/NeutronDetector/Material="G4_WATER"
+d:Ge/NeutronDetector/HL = 50. cm
+d:Ge/NeutronDetector/RMin = 99.5 cm
+d:Ge/NeutronDetector/RMax = 100.5 cm
+d:Ge/NeutronDetector/SPhi = 360. deg
+d:Ge/NeutronDetector/DPhi = 360. deg
+s:Ge/NeutronDetector/Color="green"
+
+#====Dose Scorer====#
+#s:Sc/DoseScorer/Quantity="DoseToWater" # Quantity to score
+#sv:Sc/DoseScorer/OnlyIncludeIfParticleOrAncestorNamed = 1 "neutron"
+#s:Sc/DoseScorer/Component = "NeutronDetector"
+#s:Sc/DoseScorer/Surface = "NeutronDetector" # Where to score
+#b:Sc/DoseScorer/OutputToConsole = "FALSE" # Output
+#s:Sc/DoseScorer/IfOutputFileAlreadyExists = "Overwrite"
+#i:Sc/DoseScorer/RBins = 10
+
+#====Phantom Dose Scorer====#
+s:Sc/PhantomDoseScorer/Quantity="DoseToWater" # Quantity to score
+sv:Sc/PhantomDoseScorer/OnlyIncludeIfParticleOrAncestorNamed = 1 "neutron"
+s:Sc/PhantomDoseScorer/Component = "Phantom"
+b:Sc/PhantomDoseScorer/OutputToConsole = "FALSE" # Output
+s:Sc/PhantomDoseScorer/IfOutputFileAlreadyExists = "Overwrite"
+
+#====Surface Scorer====#
+#s:Sc/SurfaceScorer/Quantity="PhaseSpace" # Quantity to score
+#s:Sc/SurfaceScorer/OutputType = "ASCII"
+#sv:Sc/SurfaceScorer/OnlyIncludeIfParticleOrAncestorNamed = 1 "neutron"
+#s:Sc/SurfaceScorer/Component = "NeutronDetector"
+#s:Sc/SurfaceScorer/Surface = "NeutronDetector/OuterCurvedSurface"
+#b:Sc/SurfaceScorer/OutputToConsole = "FALSE" # Output
+#s:Sc/SurfaceScorer/IfOutputFileAlreadyExists = "Overwrite"

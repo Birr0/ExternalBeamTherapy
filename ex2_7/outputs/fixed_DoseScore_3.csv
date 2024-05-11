@@ -1,0 +1,24 @@
+# TOPAS Version: 3.9
+# Parameter File: ./jobs/fixed_job3.txt
+# Results for scorer: DoseScorer
+# Filtered by: OnlyIncludeIfParticleOrAncestorNamed = 1 "neutron"
+# Scored on surface: NeutronDetector
+# Warning: Some steps were not scored due to touchable returning an invalid index number.
+# See console log for messages starting with: Topas experienced a potentially serious error in scoring.
+# We believe this error is due to an unsolved bug in Geant4 parallel world handling.
+# Total number of steps not scored for this reason: 65672
+# Total amount of energy not scored for this reason: 99.0988 MeV
+# R in 10 bins of 0.1 cm
+# Phi in 1 bin  of 360 deg
+# Theta in 1 bin  of 180 deg
+# DoseToWater ( Gy ) : Sum   
+0, 0, 0, 3.069692395239743e-13
+1, 0, 0, 2.547862365965409e-13
+2, 0, 0, 3.916422579037376e-13
+3, 0, 0, 8.636318792271461e-14
+4, 0, 0, 4.46980045207615e-13
+5, 0, 0, 2.69733996423327e-13
+6, 0, 0, 3.563894242653715e-13
+7, 0, 0, 4.058348438123333e-13
+8, 0, 0, 5.393956223516405e-13
+9, 0, 0, 4.025606616716443e-13
