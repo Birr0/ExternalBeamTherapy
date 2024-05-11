@@ -1,0 +1,3 @@
+includeFile = run.txt 
+i:Ts/Seed = 4 
+s:Sc/DoseScorer/OutputFile = "./completed_outputs/job4"

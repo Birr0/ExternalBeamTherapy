@@ -1,0 +1,5 @@
+includeFile = ./no_protons.txt 
+i:Ts/Seed = 0
+s:Sc/DoseScorer/OutputFile = "./no_protons/outputs/job100000"
+i:So/Demo/NumberOfHistoriesInRun = 100000
+d:So/Demo/BeamEnergy = 125 MeV

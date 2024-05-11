@@ -1,0 +1,4 @@
+includeFile = ./no_protons.txt 
+i:Ts/Seed = 0
+s:Sc/DoseScorer/OutputFile = "./no_protons/outputs/job150000"
+i:So/Demo/NumberOfHistoriesInRun = 150000

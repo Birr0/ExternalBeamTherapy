@@ -1,0 +1,5 @@
+includeFile = run.txt 
+d:So/Demo/BeamEnergy = 125 MeV
+i:So/Demo/NumberOfHistoriesInRun = 100000
+i:Ts/Seed = 4
+s:Sc/DoseScorer/OutputFile = "./complete_outputs/job4"
