@@ -1,0 +1,4 @@
+includeFile = run.txt 
+i:Ts/Seed = 3 
+s:Sc/DoseScorer/OutputFile = "./outputs/job3"
+i:So/Demo/NumberOfHistoriesInRun = 1000000
