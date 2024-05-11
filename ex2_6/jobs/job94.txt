@@ -1,0 +1,5 @@
+includeFile = ./sobp.txt 
+i:Ts/Seed = 0
+d:So/Demo/BeamEnergy = 94 MeV
+s:Sc/DoseScorer/OutputFile = "./outputs/job94"
+

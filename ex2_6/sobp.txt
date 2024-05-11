@@ -1,0 +1,95 @@
+#b:Ts/PauseBeforeQuit="True"
+i:So/Demo/NumberOfHistoriesInRun = 10000
+i:Ts/ShowHistoryCountAtInterval = 5000
+i:Ts/NumberOfThreads = 0
+#s:Gr/ViewA/Type = "OpenGL"
+
+s:So/Demo/Type = "Beam"
+s:So/Demo/Component = "BeamPosition"
+s:So/Demo/BeamParticle = "proton"
+dv:So/Source/BeamEnergySpectrumValues = 1 125 MeV #116 117 118 119 120 121 122 123 124 125 MeV
+#uv:So/Source/BeamEnergySpectrumWeightsUnscaled = 
+#uv:So/Source/BeamEnergySpectrumWeights = 0.43492973
+u:So/Demo/BeamEnergySpread = 2.5
+s:So/Demo/BeamAngularDistribution="None"
+s:So/Demo/BeamPositionDistribution="None"
+
+s:Ge/SecondBeamComponent/Parent = "World"
+s:Ge/SecondBeamComponent/Type   = "Group"
+i:So/SecondBeam/NumberOfHistoriesInRun   = 1000
+s:So/SecondBeam/Type                     = "Beam"
+s:So/SecondBeam/Component                = "SecondBeamComponent"
+s:So/SecondBeam/BeamParticle             = "proton"
+d:So/SecondBeam/BeamEnergy               = 120 MeV
+u:So/SecondBeam/BeamEnergySpread         = 2.5
+s:So/SecondBeam/BeamPositionDistribution="Flat"
+s:So/SecondBeam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+d:So/SecondBeam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+d:So/SecondBeam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+s:So/SecondBeam/BeamAngularDistribution  = "None"
+
+s:Ge/ThirdBeamComponent/Parent = "World"
+s:Ge/ThirdBeamComponent/Type   = "Group"
+i:So/ThirdBeam/NumberOfHistoriesInRun   = 1000
+s:So/ThirdBeam/Type                     = "Beam"
+s:So/ThirdBeam/Component                = "ThirdBeamComponent"
+s:So/ThirdBeam/BeamParticle             = "proton"
+d:So/ThirdBeam/BeamEnergy               = 115 MeV
+u:So/ThirdBeam/BeamEnergySpread         = 2.5
+s:So/ThirdBeam/BeamPositionDistribution="Flat"
+s:So/ThirdBeam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+d:So/ThirdBeam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+d:So/ThirdBeam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+s:So/ThirdBeam/BeamAngularDistribution  = "None"
+
+
+s:Ge/FourthBeamComponent/Parent = "World"
+s:Ge/FourthBeamComponent/Type   = "Group"
+i:So/FourthBeam/NumberOfHistoriesInRun   = 1000
+s:So/FourthBeam/Type                     = "Beam"
+s:So/FourthBeam/Component                = "FourthBeamComponent"
+s:So/FourthBeam/BeamParticle             = "proton"
+d:So/FourthBeam/BeamEnergy               = 110 MeV
+u:So/FourthBeam/BeamEnergySpread         = 2.5
+s:So/FourthBeam/BeamPositionDistribution="Flat"
+s:So/FourthBeam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+d:So/FourthBeam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+d:So/FourthBeam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+s:So/FourthBeam/BeamAngularDistribution  = "None"
+
+s:Ge/FifthBeamComponent/Parent = "World"
+s:Ge/FifthBeamComponent/Type   = "Group"
+i:So/FifthBeam/NumberOfHistoriesInRun   = 1000
+s:So/FifthBeam/Type                     = "Beam"
+s:So/FifthBeam/Component                = "FifthBeamComponent"
+s:So/FifthBeam/BeamParticle             = "proton"
+d:So/FifthBeam/BeamEnergy               = 110 MeV
+u:So/FifthBeam/BeamEnergySpread         = 2.5
+s:So/FifthBeam/BeamPositionDistribution="Flat"
+s:So/FifthBeam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+d:So/FifthBeam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+d:So/FifthBeam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+s:So/FifthBeam/BeamAngularDistribution  = "None"
+
+s:Ge/World/Material = "Vacuum"
+d:Ge/World/HLX=20.0 cm
+d:Ge/World/HLY=20.0 cm
+d:Ge/World/HLZ=50.0 cm
+b:Ge/World/Invisible = "True"
+
+s:Ge/Phantom/Type="TsCylinder"
+s:Ge/Phantom/Parent="World"
+s:Ge/Phantom/Material="G4_WATER"
+d:Ge/Phantom/HL = 27.5 cm # This is a rough guess. Change this.
+d:Ge/Phantom/RMin = 0. cm
+d:Ge/Phantom/RMax = 15. cm
+d:Ge/Phantom/SPhi = 0. deg
+d:Ge/Phantom/DPhi = 360. deg
+s:Ge/Phantom/Color="blue"
+
+#====Scorer====#`
+s:Sc/DoseScorer/Quantity="DoseToMedium" # Quantity to score
+s:Sc/DoseScorer/Component = "Phantom" # Where to score
+b:Sc/DoseScorer/OutputToConsole = "TRUE" # Output
+s:Sc/DoseScorer/IfOutputFileAlreadyExists = "Overwrite"
+i:Sc/DoseScorer/ZBins = 1000

@@ -1,0 +1,959 @@
+# Example code for PHY4004 Assignment 2 Dicom import
+
+###### Run Parameters ######
+i:Ts/NumberOfThreads = 0
+#b:Ts/PauseBeforeQuit = "True"
+i:Ts/ShowHistoryCountAtInterval = 10000000
+
+##### Graphics settings #####
+#s:Gr/ViewA/Type        = "OpenGL"
+#i:Gr/ViewA/WindowSizeX = 900
+#i:Gr/ViewA/WindowSizeY = 900
+#d:Gr/ViewA/Theta       = 0 deg  	# Can set viewing angle in terms of theta and phi to get a better view of phantom
+#d:Gr/ViewA/Phi         = 90 deg
+#i:Gr/ShowOnlyOutlineIfVoxelCountExceeds = 1000000 # By default, CT scans show just as an outline if there are too many voxels. Set this high to see our CT. 
+
+###### Geometry and Importing Phantom #####
+includeFile = ../CTData/HUtoMaterialSchneider.txt  # Includes file defining mapping from CT to Topas materials
+
+# World settings
+s:Ge/World/Material  = "Vacuum"
+d:Ge/World/HLX       = 1. m
+d:Ge/World/HLY       = 1. m
+d:Ge/World/HLZ       = 1. m
+#b:Ge/World/Invisible = "FALSE"
+
+# Import patient - note the reference to the directory where 
+# CT is stored, and a tag to identify it as a CT dataset
+s:Ge/Patient/Parent             = "World"
+s:Ge/Patient/Type               = "TsDicomPatient"
+s:Ge/Patient/DicomDirectory     = "../CTData"
+sv:Ge/Patient/DicomModalityTags = 1 "CT"
+
+d:Ge/Patient/TransX = 0.0 cm
+d:Ge/Patient/TransY = 0.0 cm
+d:Ge/Patient/TransZ = 0.0 cm
+d:Ge/Patient/RotX = 0.0 deg
+d:Ge/Patient/RotY = 0.0 deg
+d:Ge/Patient/RotZ = 0.0 deg
+
+#sv:Ge/Patient/ColorByRTStructNames = 4 "GTVp" "Lung_L" "Heart" "SpinalCord"
+#sv:Ge/Patient/ColorByRTStructColors = 4 "yellow" "red" "blue" "green"
+
+iv:Ge/Patient/ShowSpecificSlicesZ = 1 -1	# Optional - only show specific slices for efficiency. -1 here shows only the middle slice.
+
+#d:So/Demo/BeamPositionCutoffY = 1.5 cm # Y extent of position (if Flat or Gaussian)
+#s:So/Demo/BeamAngularDistribution = "Flat" # None, Flat or Gaussian
+#d:So/Demo/BeamAngularCutoffX = -3.45 deg # X cutoff of angular distrib (if Flat or Gaussian)
+#d:So/Demo/BeamAngularCutoffY = -3.45 deg # Y cutoff of angular distrib (if Flat or Gaussian)
+
+s:Sc/DoseScorer/Quantity="DoseToMedium" # Quantity to score
+s:Sc/DoseScorer/Component = "Patient" # Where to score
+b:Sc/DoseScorer/OutputToConsole = "TRUE" # Output
+s:Sc/DoseScorer/IfOutputFileAlreadyExists = "Overwrite"
+#s:Sc/DoseScorer/OutputFile = "./multi_beam"
+s:Sc/DoseScorer/OutputType = "DICOM" 
+i:Ts/Seed = 4
+s:Sc/DoseScorer/OutputFile = "./outputs/multi_beam4"
+
+
+s:So/Demo/Type = "Beam"
+
+s:So/Demo/Component = "BeamPosition"
+
+s:So/Demo/BeamParticle = "proton"
+
+u:So/Demo/BeamEnergySpread = 1.
+
+s:So/Demo/BeamAngularDistribution="None"
+
+s:So/Demo/BeamPositionDistribution="Flat"
+
+s:So/Demo/BeamPositionCutoffShape = "Rectangle"
+
+d:So/Demo/BeamPositionCutoffX = 1.5 cm
+
+d:So/Demo/BeamPositionCutoffY = 0.01 cm
+
+d:So/Demo/BeamEnergy = 105 MeV
+
+i:So/Demo/NumberOfHistoriesInRun = 34719
+
+d:Ge/BeamPosition/TransZ = 0 m
+
+d:Ge/BeamPosition/TransX = -4.6 cm
+
+d:Ge/BeamPosition/TransY = -20 cm
+
+d:Ge/BeamPosition/RotX = 90 deg
+
+
+s:Ge/104BeamComponent/Parent = "World"
+s:Ge/104BeamComponent/Type = "Group"
+d:Ge/104BeamComponent/TransX = -4.6 cm
+d:Ge/104BeamComponent/TransY = -20 cm
+d:Ge/104BeamComponent/TransZ = 0. cm
+d:Ge/104BeamComponent/RotX= 90 deg
+i:So/104Beam/NumberOfHistoriesInRun = 100000
+
+s:So/104Beam/Type = "Beam"
+
+s:So/104Beam/Component= "104BeamComponent"
+
+s:So/104Beam/BeamParticle = "proton"
+
+d:So/104Beam/BeamEnergy = 104 MeV
+
+u:So/104Beam/BeamEnergySpread = 1.
+
+s:So/104Beam/BeamAngularDistribution = "None"
+
+s:So/104Beam/BeamPositionDistribution="Flat"
+
+s:So/104Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/104Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/104Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/103BeamComponent/Parent = "World"
+s:Ge/103BeamComponent/Type = "Group"
+d:Ge/103BeamComponent/TransX = -4.6 cm
+d:Ge/103BeamComponent/TransY = -20 cm
+d:Ge/103BeamComponent/TransZ = 0. cm
+d:Ge/103BeamComponent/RotX= 90 deg
+i:So/103Beam/NumberOfHistoriesInRun = 106
+
+s:So/103Beam/Type = "Beam"
+
+s:So/103Beam/Component= "103BeamComponent"
+
+s:So/103Beam/BeamParticle = "proton"
+
+d:So/103Beam/BeamEnergy = 103 MeV
+
+u:So/103Beam/BeamEnergySpread = 1.
+
+s:So/103Beam/BeamAngularDistribution = "None"
+
+s:So/103Beam/BeamPositionDistribution="Flat"
+
+s:So/103Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/103Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/103Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/102BeamComponent/Parent = "World"
+s:Ge/102BeamComponent/Type = "Group"
+d:Ge/102BeamComponent/TransX = -4.6 cm
+d:Ge/102BeamComponent/TransY = -20 cm
+d:Ge/102BeamComponent/TransZ = 0. cm
+d:Ge/102BeamComponent/RotX= 90 deg
+i:So/102Beam/NumberOfHistoriesInRun = 1405
+
+s:So/102Beam/Type = "Beam"
+
+s:So/102Beam/Component= "102BeamComponent"
+
+s:So/102Beam/BeamParticle = "proton"
+
+d:So/102Beam/BeamEnergy = 102 MeV
+
+u:So/102Beam/BeamEnergySpread = 1.
+
+s:So/102Beam/BeamAngularDistribution = "None"
+
+s:So/102Beam/BeamPositionDistribution="Flat"
+
+s:So/102Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/102Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/102Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/101BeamComponent/Parent = "World"
+s:Ge/101BeamComponent/Type = "Group"
+d:Ge/101BeamComponent/TransX = -4.6 cm
+d:Ge/101BeamComponent/TransY = -20 cm
+d:Ge/101BeamComponent/TransZ = 0. cm
+d:Ge/101BeamComponent/RotX= 90 deg
+i:So/101Beam/NumberOfHistoriesInRun = 1487
+
+s:So/101Beam/Type = "Beam"
+
+s:So/101Beam/Component= "101BeamComponent"
+
+s:So/101Beam/BeamParticle = "proton"
+
+d:So/101Beam/BeamEnergy = 101 MeV
+
+u:So/101Beam/BeamEnergySpread = 1.
+
+s:So/101Beam/BeamAngularDistribution = "None"
+
+s:So/101Beam/BeamPositionDistribution="Flat"
+
+s:So/101Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/101Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/101Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/100BeamComponent/Parent = "World"
+s:Ge/100BeamComponent/Type = "Group"
+d:Ge/100BeamComponent/TransX = -4.6 cm
+d:Ge/100BeamComponent/TransY = -20 cm
+d:Ge/100BeamComponent/TransZ = 0. cm
+d:Ge/100BeamComponent/RotX= 90 deg
+i:So/100Beam/NumberOfHistoriesInRun = 15968
+
+s:So/100Beam/Type = "Beam"
+
+s:So/100Beam/Component= "100BeamComponent"
+
+s:So/100Beam/BeamParticle = "proton"
+
+d:So/100Beam/BeamEnergy = 100 MeV
+
+u:So/100Beam/BeamEnergySpread = 1.
+
+s:So/100Beam/BeamAngularDistribution = "None"
+
+s:So/100Beam/BeamPositionDistribution="Flat"
+
+s:So/100Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/100Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/100Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/99BeamComponent/Parent = "World"
+s:Ge/99BeamComponent/Type = "Group"
+d:Ge/99BeamComponent/TransX = -4.6 cm
+d:Ge/99BeamComponent/TransY = -20 cm
+d:Ge/99BeamComponent/TransZ = 0. cm
+d:Ge/99BeamComponent/RotX= 90 deg
+i:So/99Beam/NumberOfHistoriesInRun = 600
+
+s:So/99Beam/Type = "Beam"
+
+s:So/99Beam/Component= "99BeamComponent"
+
+s:So/99Beam/BeamParticle = "proton"
+
+d:So/99Beam/BeamEnergy = 99 MeV
+
+u:So/99Beam/BeamEnergySpread = 1.
+
+s:So/99Beam/BeamAngularDistribution = "None"
+
+s:So/99Beam/BeamPositionDistribution="Flat"
+
+s:So/99Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/99Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/99Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/98BeamComponent/Parent = "World"
+s:Ge/98BeamComponent/Type = "Group"
+d:Ge/98BeamComponent/TransX = -4.6 cm
+d:Ge/98BeamComponent/TransY = -20 cm
+d:Ge/98BeamComponent/TransZ = 0. cm
+d:Ge/98BeamComponent/RotX= 90 deg
+i:So/98Beam/NumberOfHistoriesInRun = 12396
+
+s:So/98Beam/Type = "Beam"
+
+s:So/98Beam/Component= "98BeamComponent"
+
+s:So/98Beam/BeamParticle = "proton"
+
+d:So/98Beam/BeamEnergy = 98 MeV
+
+u:So/98Beam/BeamEnergySpread = 1.
+
+s:So/98Beam/BeamAngularDistribution = "None"
+
+s:So/98Beam/BeamPositionDistribution="Flat"
+
+s:So/98Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/98Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/98Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/97BeamComponent/Parent = "World"
+s:Ge/97BeamComponent/Type = "Group"
+d:Ge/97BeamComponent/TransX = -4.6 cm
+d:Ge/97BeamComponent/TransY = -20 cm
+d:Ge/97BeamComponent/TransZ = 0. cm
+d:Ge/97BeamComponent/RotX= 90 deg
+i:So/97Beam/NumberOfHistoriesInRun = 10001
+
+s:So/97Beam/Type = "Beam"
+
+s:So/97Beam/Component= "97BeamComponent"
+
+s:So/97Beam/BeamParticle = "proton"
+
+d:So/97Beam/BeamEnergy = 97 MeV
+
+u:So/97Beam/BeamEnergySpread = 1.
+
+s:So/97Beam/BeamAngularDistribution = "None"
+
+s:So/97Beam/BeamPositionDistribution="Flat"
+
+s:So/97Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/97Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/97Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/96BeamComponent/Parent = "World"
+s:Ge/96BeamComponent/Type = "Group"
+d:Ge/96BeamComponent/TransX = -4.6 cm
+d:Ge/96BeamComponent/TransY = -20 cm
+d:Ge/96BeamComponent/TransZ = 0. cm
+d:Ge/96BeamComponent/RotX= 90 deg
+i:So/96Beam/NumberOfHistoriesInRun = 4020
+
+s:So/96Beam/Type = "Beam"
+
+s:So/96Beam/Component= "96BeamComponent"
+
+s:So/96Beam/BeamParticle = "proton"
+
+d:So/96Beam/BeamEnergy = 96 MeV
+
+u:So/96Beam/BeamEnergySpread = 1.
+
+s:So/96Beam/BeamAngularDistribution = "None"
+
+s:So/96Beam/BeamPositionDistribution="Flat"
+
+s:So/96Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/96Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/96Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/95BeamComponent/Parent = "World"
+s:Ge/95BeamComponent/Type = "Group"
+d:Ge/95BeamComponent/TransX = -4.6 cm
+d:Ge/95BeamComponent/TransY = -20 cm
+d:Ge/95BeamComponent/TransZ = 0. cm
+d:Ge/95BeamComponent/RotX= 90 deg
+i:So/95Beam/NumberOfHistoriesInRun = 8938
+
+s:So/95Beam/Type = "Beam"
+
+s:So/95Beam/Component= "95BeamComponent"
+
+s:So/95Beam/BeamParticle = "proton"
+
+d:So/95Beam/BeamEnergy = 95 MeV
+
+u:So/95Beam/BeamEnergySpread = 1.
+
+s:So/95Beam/BeamAngularDistribution = "None"
+
+s:So/95Beam/BeamPositionDistribution="Flat"
+
+s:So/95Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/95Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/95Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/94BeamComponent/Parent = "World"
+s:Ge/94BeamComponent/Type = "Group"
+d:Ge/94BeamComponent/TransX = -4.6 cm
+d:Ge/94BeamComponent/TransY = -20 cm
+d:Ge/94BeamComponent/TransZ = 0. cm
+d:Ge/94BeamComponent/RotX= 90 deg
+i:So/94Beam/NumberOfHistoriesInRun = 7522
+
+s:So/94Beam/Type = "Beam"
+
+s:So/94Beam/Component= "94BeamComponent"
+
+s:So/94Beam/BeamParticle = "proton"
+
+d:So/94Beam/BeamEnergy = 94 MeV
+
+u:So/94Beam/BeamEnergySpread = 1.
+
+s:So/94Beam/BeamAngularDistribution = "None"
+
+s:So/94Beam/BeamPositionDistribution="Flat"
+
+s:So/94Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/94Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/94Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/93BeamComponent/Parent = "World"
+s:Ge/93BeamComponent/Type = "Group"
+d:Ge/93BeamComponent/TransX = -4.6 cm
+d:Ge/93BeamComponent/TransY = -20 cm
+d:Ge/93BeamComponent/TransZ = 0. cm
+d:Ge/93BeamComponent/RotX= 90 deg
+i:So/93Beam/NumberOfHistoriesInRun = 3961
+
+s:So/93Beam/Type = "Beam"
+
+s:So/93Beam/Component= "93BeamComponent"
+
+s:So/93Beam/BeamParticle = "proton"
+
+d:So/93Beam/BeamEnergy = 93 MeV
+
+u:So/93Beam/BeamEnergySpread = 1.
+
+s:So/93Beam/BeamAngularDistribution = "None"
+
+s:So/93Beam/BeamPositionDistribution="Flat"
+
+s:So/93Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/93Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/93Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/92BeamComponent/Parent = "World"
+s:Ge/92BeamComponent/Type = "Group"
+d:Ge/92BeamComponent/TransX = -4.6 cm
+d:Ge/92BeamComponent/TransY = -20 cm
+d:Ge/92BeamComponent/TransZ = 0. cm
+d:Ge/92BeamComponent/RotX= 90 deg
+i:So/92Beam/NumberOfHistoriesInRun = 6156
+
+s:So/92Beam/Type = "Beam"
+
+s:So/92Beam/Component= "92BeamComponent"
+
+s:So/92Beam/BeamParticle = "proton"
+
+d:So/92Beam/BeamEnergy = 92 MeV
+
+u:So/92Beam/BeamEnergySpread = 1.
+
+s:So/92Beam/BeamAngularDistribution = "None"
+
+s:So/92Beam/BeamPositionDistribution="Flat"
+
+s:So/92Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/92Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/92Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/91BeamComponent/Parent = "World"
+s:Ge/91BeamComponent/Type = "Group"
+d:Ge/91BeamComponent/TransX = -4.6 cm
+d:Ge/91BeamComponent/TransY = -20 cm
+d:Ge/91BeamComponent/TransZ = 0. cm
+d:Ge/91BeamComponent/RotX= 90 deg
+i:So/91Beam/NumberOfHistoriesInRun = 3253
+
+s:So/91Beam/Type = "Beam"
+
+s:So/91Beam/Component= "91BeamComponent"
+
+s:So/91Beam/BeamParticle = "proton"
+
+d:So/91Beam/BeamEnergy = 91 MeV
+
+u:So/91Beam/BeamEnergySpread = 1.
+
+s:So/91Beam/BeamAngularDistribution = "None"
+
+s:So/91Beam/BeamPositionDistribution="Flat"
+
+s:So/91Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/91Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/91Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/90BeamComponent/Parent = "World"
+s:Ge/90BeamComponent/Type = "Group"
+d:Ge/90BeamComponent/TransX = -4.6 cm
+d:Ge/90BeamComponent/TransY = -20 cm
+d:Ge/90BeamComponent/TransZ = 0. cm
+d:Ge/90BeamComponent/RotX= 90 deg
+i:So/90Beam/NumberOfHistoriesInRun = 4224
+
+s:So/90Beam/Type = "Beam"
+
+s:So/90Beam/Component= "90BeamComponent"
+
+s:So/90Beam/BeamParticle = "proton"
+
+d:So/90Beam/BeamEnergy = 90 MeV
+
+u:So/90Beam/BeamEnergySpread = 1.
+
+s:So/90Beam/BeamAngularDistribution = "None"
+
+s:So/90Beam/BeamPositionDistribution="Flat"
+
+s:So/90Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/90Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/90Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/89BeamComponent/Parent = "World"
+s:Ge/89BeamComponent/Type = "Group"
+d:Ge/89BeamComponent/TransX = -4.6 cm
+d:Ge/89BeamComponent/TransY = -20 cm
+d:Ge/89BeamComponent/TransZ = 0. cm
+d:Ge/89BeamComponent/RotX= 90 deg
+i:So/89Beam/NumberOfHistoriesInRun = 6336
+
+s:So/89Beam/Type = "Beam"
+
+s:So/89Beam/Component= "89BeamComponent"
+
+s:So/89Beam/BeamParticle = "proton"
+
+d:So/89Beam/BeamEnergy = 89 MeV
+
+u:So/89Beam/BeamEnergySpread = 1.
+
+s:So/89Beam/BeamAngularDistribution = "None"
+
+s:So/89Beam/BeamPositionDistribution="Flat"
+
+s:So/89Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/89Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/89Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/88BeamComponent/Parent = "World"
+s:Ge/88BeamComponent/Type = "Group"
+d:Ge/88BeamComponent/TransX = -4.6 cm
+d:Ge/88BeamComponent/TransY = -20 cm
+d:Ge/88BeamComponent/TransZ = 0. cm
+d:Ge/88BeamComponent/RotX= 90 deg
+i:So/88Beam/NumberOfHistoriesInRun = 5132
+
+s:So/88Beam/Type = "Beam"
+
+s:So/88Beam/Component= "88BeamComponent"
+
+s:So/88Beam/BeamParticle = "proton"
+
+d:So/88Beam/BeamEnergy = 88 MeV
+
+u:So/88Beam/BeamEnergySpread = 1.
+
+s:So/88Beam/BeamAngularDistribution = "None"
+
+s:So/88Beam/BeamPositionDistribution="Flat"
+
+s:So/88Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/88Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/88Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/87BeamComponent/Parent = "World"
+s:Ge/87BeamComponent/Type = "Group"
+d:Ge/87BeamComponent/TransX = -4.6 cm
+d:Ge/87BeamComponent/TransY = -20 cm
+d:Ge/87BeamComponent/TransZ = 0. cm
+d:Ge/87BeamComponent/RotX= 90 deg
+i:So/87Beam/NumberOfHistoriesInRun = 3733
+
+s:So/87Beam/Type = "Beam"
+
+s:So/87Beam/Component= "87BeamComponent"
+
+s:So/87Beam/BeamParticle = "proton"
+
+d:So/87Beam/BeamEnergy = 87 MeV
+
+u:So/87Beam/BeamEnergySpread = 1.
+
+s:So/87Beam/BeamAngularDistribution = "None"
+
+s:So/87Beam/BeamPositionDistribution="Flat"
+
+s:So/87Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/87Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/87Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/86BeamComponent/Parent = "World"
+s:Ge/86BeamComponent/Type = "Group"
+d:Ge/86BeamComponent/TransX = -4.6 cm
+d:Ge/86BeamComponent/TransY = -20 cm
+d:Ge/86BeamComponent/TransZ = 0. cm
+d:Ge/86BeamComponent/RotX= 90 deg
+i:So/86Beam/NumberOfHistoriesInRun = 4988
+
+s:So/86Beam/Type = "Beam"
+
+s:So/86Beam/Component= "86BeamComponent"
+
+s:So/86Beam/BeamParticle = "proton"
+
+d:So/86Beam/BeamEnergy = 86 MeV
+
+u:So/86Beam/BeamEnergySpread = 1.
+
+s:So/86Beam/BeamAngularDistribution = "None"
+
+s:So/86Beam/BeamPositionDistribution="Flat"
+
+s:So/86Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/86Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/86Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/85BeamComponent/Parent = "World"
+s:Ge/85BeamComponent/Type = "Group"
+d:Ge/85BeamComponent/TransX = -4.6 cm
+d:Ge/85BeamComponent/TransY = -20 cm
+d:Ge/85BeamComponent/TransZ = 0. cm
+d:Ge/85BeamComponent/RotX= 90 deg
+i:So/85Beam/NumberOfHistoriesInRun = 6165
+
+s:So/85Beam/Type = "Beam"
+
+s:So/85Beam/Component= "85BeamComponent"
+
+s:So/85Beam/BeamParticle = "proton"
+
+d:So/85Beam/BeamEnergy = 85 MeV
+
+u:So/85Beam/BeamEnergySpread = 1.
+
+s:So/85Beam/BeamAngularDistribution = "None"
+
+s:So/85Beam/BeamPositionDistribution="Flat"
+
+s:So/85Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/85Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/85Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/84BeamComponent/Parent = "World"
+s:Ge/84BeamComponent/Type = "Group"
+d:Ge/84BeamComponent/TransX = -4.6 cm
+d:Ge/84BeamComponent/TransY = -20 cm
+d:Ge/84BeamComponent/TransZ = 0. cm
+d:Ge/84BeamComponent/RotX= 90 deg
+i:So/84Beam/NumberOfHistoriesInRun = 1668
+
+s:So/84Beam/Type = "Beam"
+
+s:So/84Beam/Component= "84BeamComponent"
+
+s:So/84Beam/BeamParticle = "proton"
+
+d:So/84Beam/BeamEnergy = 84 MeV
+
+u:So/84Beam/BeamEnergySpread = 1.
+
+s:So/84Beam/BeamAngularDistribution = "None"
+
+s:So/84Beam/BeamPositionDistribution="Flat"
+
+s:So/84Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/84Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/84Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/83BeamComponent/Parent = "World"
+s:Ge/83BeamComponent/Type = "Group"
+d:Ge/83BeamComponent/TransX = -4.6 cm
+d:Ge/83BeamComponent/TransY = -20 cm
+d:Ge/83BeamComponent/TransZ = 0. cm
+d:Ge/83BeamComponent/RotX= 90 deg
+i:So/83Beam/NumberOfHistoriesInRun = 2310
+
+s:So/83Beam/Type = "Beam"
+
+s:So/83Beam/Component= "83BeamComponent"
+
+s:So/83Beam/BeamParticle = "proton"
+
+d:So/83Beam/BeamEnergy = 83 MeV
+
+u:So/83Beam/BeamEnergySpread = 1.
+
+s:So/83Beam/BeamAngularDistribution = "None"
+
+s:So/83Beam/BeamPositionDistribution="Flat"
+
+s:So/83Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/83Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/83Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/82BeamComponent/Parent = "World"
+s:Ge/82BeamComponent/Type = "Group"
+d:Ge/82BeamComponent/TransX = -4.6 cm
+d:Ge/82BeamComponent/TransY = -20 cm
+d:Ge/82BeamComponent/TransZ = 0. cm
+d:Ge/82BeamComponent/RotX= 90 deg
+i:So/82Beam/NumberOfHistoriesInRun = 1569
+
+s:So/82Beam/Type = "Beam"
+
+s:So/82Beam/Component= "82BeamComponent"
+
+s:So/82Beam/BeamParticle = "proton"
+
+d:So/82Beam/BeamEnergy = 82 MeV
+
+u:So/82Beam/BeamEnergySpread = 1.
+
+s:So/82Beam/BeamAngularDistribution = "None"
+
+s:So/82Beam/BeamPositionDistribution="Flat"
+
+s:So/82Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/82Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/82Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/81BeamComponent/Parent = "World"
+s:Ge/81BeamComponent/Type = "Group"
+d:Ge/81BeamComponent/TransX = -4.6 cm
+d:Ge/81BeamComponent/TransY = -20 cm
+d:Ge/81BeamComponent/TransZ = 0. cm
+d:Ge/81BeamComponent/RotX= 90 deg
+i:So/81Beam/NumberOfHistoriesInRun = 62
+
+s:So/81Beam/Type = "Beam"
+
+s:So/81Beam/Component= "81BeamComponent"
+
+s:So/81Beam/BeamParticle = "proton"
+
+d:So/81Beam/BeamEnergy = 81 MeV
+
+u:So/81Beam/BeamEnergySpread = 1.
+
+s:So/81Beam/BeamAngularDistribution = "None"
+
+s:So/81Beam/BeamPositionDistribution="Flat"
+
+s:So/81Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/81Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/81Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/80BeamComponent/Parent = "World"
+s:Ge/80BeamComponent/Type = "Group"
+d:Ge/80BeamComponent/TransX = -4.6 cm
+d:Ge/80BeamComponent/TransY = -20 cm
+d:Ge/80BeamComponent/TransZ = 0. cm
+d:Ge/80BeamComponent/RotX= 90 deg
+i:So/80Beam/NumberOfHistoriesInRun = 294
+
+s:So/80Beam/Type = "Beam"
+
+s:So/80Beam/Component= "80BeamComponent"
+
+s:So/80Beam/BeamParticle = "proton"
+
+d:So/80Beam/BeamEnergy = 80 MeV
+
+u:So/80Beam/BeamEnergySpread = 1.
+
+s:So/80Beam/BeamAngularDistribution = "None"
+
+s:So/80Beam/BeamPositionDistribution="Flat"
+
+s:So/80Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/80Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/80Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/79BeamComponent/Parent = "World"
+s:Ge/79BeamComponent/Type = "Group"
+d:Ge/79BeamComponent/TransX = -4.6 cm
+d:Ge/79BeamComponent/TransY = -20 cm
+d:Ge/79BeamComponent/TransZ = 0. cm
+d:Ge/79BeamComponent/RotX= 90 deg
+i:So/79Beam/NumberOfHistoriesInRun = 79
+
+s:So/79Beam/Type = "Beam"
+
+s:So/79Beam/Component= "79BeamComponent"
+
+s:So/79Beam/BeamParticle = "proton"
+
+d:So/79Beam/BeamEnergy = 79 MeV
+
+u:So/79Beam/BeamEnergySpread = 1.
+
+s:So/79Beam/BeamAngularDistribution = "None"
+
+s:So/79Beam/BeamPositionDistribution="Flat"
+
+s:So/79Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/79Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/79Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/78BeamComponent/Parent = "World"
+s:Ge/78BeamComponent/Type = "Group"
+d:Ge/78BeamComponent/TransX = -4.6 cm
+d:Ge/78BeamComponent/TransY = -20 cm
+d:Ge/78BeamComponent/TransZ = 0. cm
+d:Ge/78BeamComponent/RotX= 90 deg
+i:So/78Beam/NumberOfHistoriesInRun = 3
+
+s:So/78Beam/Type = "Beam"
+
+s:So/78Beam/Component= "78BeamComponent"
+
+s:So/78Beam/BeamParticle = "proton"
+
+d:So/78Beam/BeamEnergy = 78 MeV
+
+u:So/78Beam/BeamEnergySpread = 1.
+
+s:So/78Beam/BeamAngularDistribution = "None"
+
+s:So/78Beam/BeamPositionDistribution="Flat"
+
+s:So/78Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/78Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/78Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/77BeamComponent/Parent = "World"
+s:Ge/77BeamComponent/Type = "Group"
+d:Ge/77BeamComponent/TransX = -4.6 cm
+d:Ge/77BeamComponent/TransY = -20 cm
+d:Ge/77BeamComponent/TransZ = 0. cm
+d:Ge/77BeamComponent/RotX= 90 deg
+i:So/77Beam/NumberOfHistoriesInRun = 12
+
+s:So/77Beam/Type = "Beam"
+
+s:So/77Beam/Component= "77BeamComponent"
+
+s:So/77Beam/BeamParticle = "proton"
+
+d:So/77Beam/BeamEnergy = 77 MeV
+
+u:So/77Beam/BeamEnergySpread = 1.
+
+s:So/77Beam/BeamAngularDistribution = "None"
+
+s:So/77Beam/BeamPositionDistribution="Flat"
+
+s:So/77Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/77Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/77Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/76BeamComponent/Parent = "World"
+s:Ge/76BeamComponent/Type = "Group"
+d:Ge/76BeamComponent/TransX = -4.6 cm
+d:Ge/76BeamComponent/TransY = -20 cm
+d:Ge/76BeamComponent/TransZ = 0. cm
+d:Ge/76BeamComponent/RotX= 90 deg
+i:So/76Beam/NumberOfHistoriesInRun = 15
+
+s:So/76Beam/Type = "Beam"
+
+s:So/76Beam/Component= "76BeamComponent"
+
+s:So/76Beam/BeamParticle = "proton"
+
+d:So/76Beam/BeamEnergy = 76 MeV
+
+u:So/76Beam/BeamEnergySpread = 1.
+
+s:So/76Beam/BeamAngularDistribution = "None"
+
+s:So/76Beam/BeamPositionDistribution="Flat"
+
+s:So/76Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/76Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/76Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
+
+s:Ge/75BeamComponent/Parent = "World"
+s:Ge/75BeamComponent/Type = "Group"
+d:Ge/75BeamComponent/TransX = -4.6 cm
+d:Ge/75BeamComponent/TransY = -20 cm
+d:Ge/75BeamComponent/TransZ = 0. cm
+d:Ge/75BeamComponent/RotX= 90 deg
+i:So/75Beam/NumberOfHistoriesInRun = 438
+
+s:So/75Beam/Type = "Beam"
+
+s:So/75Beam/Component= "75BeamComponent"
+
+s:So/75Beam/BeamParticle = "proton"
+
+d:So/75Beam/BeamEnergy = 75 MeV
+
+u:So/75Beam/BeamEnergySpread = 1.
+
+s:So/75Beam/BeamAngularDistribution = "None"
+
+s:So/75Beam/BeamPositionDistribution="Flat"
+
+s:So/75Beam/BeamPositionCutoffShape = "Rectangle" # Rectangle or Ellipse (if Flat or Gaussian)
+
+d:So/75Beam/BeamPositionCutoffX = 1.5 cm # X extent of position (if Flat or Gaussian)
+
+d:So/75Beam/BeamPositionCutoffY = 0.01 cm # Y extent of position (if Flat or Gaussian)
+
